@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+  int main() {
+      unsigned long long a;
+  
+      int level = 0;
+      int input = 0;
+      unsigned long long MAX=0;
+      unsigned long long Max[99];
+      
+      scanf("%d[2-99]",&level);
+          
+      while(input < level){
+          scanf("%llu[1-99999999999]",&a);
+          if( a > 0 ){
+              if(a > MAX && a < 1000000000000){
+                  MAX = a;
+              }
+          }
+              
+          if( a == 0 && MAX > 0 ){
+              Max[input] = MAX;
+              input++;
+              MAX=0;
+          }
+          
+          
+      }
+      
+      for(int i = 0; i < level; i++){
+          //printf("%llu\n",Max[i]);
+          printf("%llu\n",Max[i]);
+      }
+    
+      
+      
+      return 0;
+ }
