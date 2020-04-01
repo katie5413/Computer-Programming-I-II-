@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main(){
+    float h,w,BMI;
+    
+    printf("請輸入身高（cm）、體重（kg）\n");
+    scanf("%f %f", &h, &w);
+    BMI=w/((h/100)*(h/100));
+    printf("%.2f\n",BMI);
+    return 0 ;
+
+}
