@@ -1,2 +1,2 @@
-# Computer-Programming-I-II-
-homework for Computer Programming (I)(II)
+# Computer-Programming1
+homework for NCCUCS 108 Computer Programming (I)
