@@ -1,0 +1,39 @@
+#include <stdio.h>
+ 
+int main() {
+    char a;
+    int b;
+    int c=0;
+    scanf("%c[A-z]",&a);
+    scanf("%d[0-30000]",&b);
+ 
+    for(int i =1;i<b+1;i++){
+        if(b%i==0 ){
+            c=c+i;
+        }
+    }
+    
+    if(b>=0 && b<=30000){
+         switch(a){
+             case 'o':
+             case 'O':
+                 printf("Honest student.\n");
+                 printf("You have $%d in your card now.\n",b+c);
+                 break;
+             case 'G':
+             case 'g':
+                printf("Liar. This golden card is not yours.\n");
+                break;
+            case 'S':
+            case 's':
+               printf("Liar. This silver card is not yours.\n");
+               break;
+             default:
+                 printf("???\n");
+                 printf("You have $%d in your card now.\n",b);
+                 break;
+         }
+      }
+    
+     return 0;
+  }
