@@ -1,0 +1,327 @@
+//
+//  main.c
+//  hw7
+//
+//  Created by Katie on 2019/11/21.
+//  Copyright © 2019 Katie. All rights reserved.
+//
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#define size 8
+
+int turn = 1; //Black=1;White=2;
+int gameState=0;//0=start;1=change;
+int *gameStatePtr=&gameState;
+
+
+void init(int *array){
+    //Black
+    *(array+3*size+4)=1;
+    *(array+4*size+3)=1;
+   //White
+    *(array+3*size+3)=2;
+    *(array+4*size+4)=2;
+
+}
+
+void printArray( int *array, int SIZE){
+
+    for(int j = 0; j < size; j++ ){
+        for(int  i = 0; i < size; i ++){
+            printf("%d ", *(array+i*size+j));
+        }
+        printf( "\n" );
+    }
+}
+
+void ul(int* array,char Col,int Row){
+    printf("check ul\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65-1>=0 && Row-1-1>=0 && *(array+ (Col-65-1)*size + (Row-1-1))>0 && *(array+ (Col-65-1)*size + (Row-1-1))!=tmp) {
+     //往左上檢查是否有我方棋子圍住，若有，則吃子並下棋
+    int c = 2;
+        while (Row-1-c>=0) {
+            if (*(array+ (Col-65-c)*size + (Row-1-c))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65-i)*size + (Row-1-i))=tmp;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+
+void u(int* array,char Col,int Row){
+    printf("check u\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Row-1-1>=0 && *(array+(Col-65)*size+(Row-1-1))>0 && *(array+ (Col-65)*size + (Row-1-1))!=tmp) {
+     //往上檢查是否有我方棋子圍住，若有，則吃子並下棋
+    int c = 2;
+        while (Row-1-c>=0) {
+            if (*(array+ (Col-65)*size + (Row-1-c))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65)*size + (Row-1-i))=4;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+
+void ur(int* array,char Col,int Row){
+    printf("check ur\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65+1<=8 && Row-1-1>=0 && *(array+ (Col-65+1)*size + (Row-1-1))>0 && *(array+ (Col-65+1)*size + (Row-1-1))!=tmp){
+     //往右上檢查是否有我方棋子圍住，若有，則吃子並下棋
+     int c = 2;
+         while (Col-65+c<=8 && Row-1-c>=0) {
+             if ( *(array+ (Col-65+c)*size + (Row-1-c))==tmp) {
+
+                 for (int i=1; i<c; i++) {
+                     *(array+ (Col-65+i)*size + (Row-1-i))=tmp;
+                     *gameStatePtr=1;
+                     printf("%d\n",*gameStatePtr);
+                 }
+                 break;
+             } else {
+                 c++;
+             }
+         }
+     }
+}
+
+void l(int* array,char Col,int Row){
+    printf("check l\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65-1>=0 && *(array+ (Col-65-1)*size + (Row-1))>0 && *(array+ (Col-65-1)*size + (Row-1))!=tmp) {
+         //往左檢查是否有我方棋子圍住，若有，則吃子並下棋
+        int c = 2;
+        while (Col-65-c>=0) {
+            if (*(array+ (Col-65-c)*size + (Row-1))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65-i)*size + (Row-1))=tmp;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+
+void r(int* array,char Col,int Row){
+    printf("check r\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65+1<=8 && *(array+ (Col-65+1)*size + (Row-1))>=0 && *(array+ (Col-65+1)*size + (Row-1))!=tmp) {
+    //往右檢查是否有我方棋子圍住，若有，則吃子並下棋
+    int c = 2;
+        while (Col-65+c<=8) {
+            if (*(array+ (Col-65+c)*size + (Row-1))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65+i)*size + (Row-1))=tmp;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+
+
+void dl(int* array,char Col,int Row){
+    printf("check dl\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65-1>=0 && Row-1+1<=8 && *(array+ (Col-65-1)*size + (Row-1+1))>0 && *(array+ (Col-65-1)*size + (Row-1+1))!=tmp)
+    {
+    //往左下檢查是否有我方棋子圍住，若有，則吃子並下棋
+    int c = 2;
+        while (Col-65-c>=0 && Row-1+c<=8) {
+            if (*(array+ (Col-65-c)*size + (Row-1+c))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65-i)*size + (Row-1+i))=tmp;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+
+void d(int* array,char Col,int Row){
+    printf("check d\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+       if (Col-65+1<=8 && *(array+ (Col-65)*size + (Row-1+1))>0 && *(array+ (Col-65)*size + (Row-1+1))!=tmp) {
+           //往下檢查是否有我方棋子圍住，若有，則吃子並下棋
+           int c = 2;
+           while (Col-65+c<=8) {
+               if (*(array+ (Col-65)*size + (Row-1+c))==tmp) {
+
+                   for (int i=1; i<c; i++) {
+                       *(array+ (Col-65)*size + (Row-1+i))=tmp;
+                       *gameStatePtr=1;
+                       printf("%d\n",*gameStatePtr);
+                    }
+                   break;
+               } else {
+                   c++;
+               }
+           }
+       }
+}
+
+void dr(int* array,char Col,int Row){
+    printf("check dr\n");
+    int tmp =*(array+ (Col-65)*size + (Row-1));
+    if (Col-65+1<=8 && Row-1+1<=8 && *(array+ (Col-65+1)*size + (Row-1+1))>0 &&
+    *(array+ (Col-65+1)*size + (Row-1+1))!=tmp) {
+    //往右下檢查是否有我方棋子圍住，若有，則吃子並下棋
+    int c = 2;
+        while (Col-65+c<=8 && Row-1+c<=8) {
+            if (*(array+ (Col-65+c)*size + (Row-1+c))==tmp) {
+                for (int i=1; i<c; i++) {
+                    *(array+ (Col-65+i)*size + (Row-1+i))=tmp;
+                    *gameStatePtr=1;
+                    printf("%d\n",*gameStatePtr);
+                }
+                break;
+            } else {
+                c++;
+            }
+        }
+    }
+}
+//void (*check[size])(int*,char,int)={ul,u,ur,l,r,dl,d,dr};
+
+void (*check[size])(int*,char,int)={u,d,l,r,dl,dr,ul,ur};
+int changeColor(int *array, int turn, char Col, int Row){
+    
+    //already has chess
+    if(*(array+ (Col-65)*size + (Row-1))==0){
+        *(array+ (Col-65)*size + (Row-1))=turn;
+    }else{
+        return -1;
+    }
+    return 0;
+}
+
+
+
+int main( void ){
+    //init
+    int deck[size][size]={0};
+    init(*deck);
+    char Col;
+    int Row;
+
+
+    //printArray( *deck, 64);
+    
+    while(scanf(" %c %d",&Col,&Row)!=EOF){
+        //init
+        *gameStatePtr=0;
+        Col=toupper(Col);
+        printf("turn:%d col:%c row:%d\n",turn,Col,Row);
+
+        
+        if(Col>=65 && Col<=72 && Row>=1 && Row<=8){
+            //printf("it works\n");
+            
+            for(int i=0;i<size;i++){
+                for(int j=0;j<size;j++){
+                    //printf("%d\n",deck[i][j]);
+                    if( deck[i][j]!= 0 ){
+                        int c =0;
+                        c++;
+                        
+                    }
+                }
+            }
+            /*
+            //change
+            if(changeColor(*deck,turn,Col,Row)!=0){
+                //printf("return:%d\n",changeColor(*deck,turn,Col,Row));
+                //0=ok;-1=bad
+                printf("INVALID MOVE AT %c{columns} %d{row}\n",Col,Row);
+                break;
+                
+            }
+            */
+            changeColor(*deck,turn,Col,Row);
+            //printArray( *deck, 64);
+            printf("\n");
+            //check
+            for(int i=0;i<size;i++){
+                (*check[i])(*deck,Col,Row);
+            }
+            //printf("Ptr=%d\n",*gameStatePtr);
+            if(*gameStatePtr!=1){
+                //no change
+                printf("INVALID MOVE AT %c{columns} %d{row}\n",Col,Row);
+                //break;
+            }
+            //printf("after input\n");
+            printArray( *deck, 64);
+            //turn
+            if(turn==1){
+                turn=2;
+            }else{
+                turn=1;
+            }
+            
+            
+            
+        }else{
+            break;
+        }
+       
+    }
+    //printf("out of while\n");
+    if(*gameStatePtr!=0){
+               int B=0;
+               int W=0;
+               
+               for(int i=0;i<size;i++){
+                   for(int j=0;j<size;j++){
+                       //printf("%d\n",deck[i][j]);
+                       if( deck[i][j]== 1 ){
+                           B++;
+                       }else if(deck[i][j]!=0 ){
+                           W++;
+                       }
+                   }
+               }
+               printf("%d:%d\n",B,W);
+               if(B>W){
+                   printf("Black wins!\n");
+               }else{
+                   printf("White wins!\n");
+               }
+    }
+    
+    /*else{
+        printf("INVALID MOVE AT %c{columns} %d{row}\n",Col,Row);
+    }
+    */
+    return 0;
+}
+
+
+
