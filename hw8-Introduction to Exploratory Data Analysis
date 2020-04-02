@@ -1,0 +1,84 @@
+//
+//  main.c
+//  hw8
+//
+//  Created by Katie on 2019/12/2.
+//  Copyright © 2019 Katie. All rights reserved.
+//
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+char originData[100000];//with same
+char specialChar[100000];//spxChar
+char *cleanData[100000];//unique
+char *uniqueData[100000];
+long int total=0; //total words
+long int unique=0;
+long int spxCharCtr=0; //not words in array
+void different(char *cleanData[], char *uniqueData[]);
+long int count(long int i,char *cleanData[],char *uniqueData[] );
+
+int main(){
+
+    gets(originData);
+    
+    for(long int i = 0;i<100000;i++){
+        originData[i]=tolower(originData[i]);
+        //replace spxCharCtr with ' '
+        if(isalnum(originData[i])==0){
+            specialChar[spxCharCtr]=originData[i];
+            spxCharCtr++;
+
+        }
+    }
+
+    
+    cleanData[total]=strtok(originData,specialChar);
+    while(cleanData[total]!=NULL){
+        total ++;
+        cleanData[total]=strtok(NULL,specialChar);
+    };
+    
+    uniqueData[0]=cleanData[0];
+    unique++;
+    different(cleanData,uniqueData);
+    
+    for(long int i=0;i<unique;i++){
+        printf("%s %ld\n",uniqueData[i],count(i,cleanData,uniqueData));
+    }
+
+    return 0;
+}
+
+long int count(long int i,char *cleanData[],char *uniqueData[] ){
+    long int tmp=0;
+    for(long int j=0;j<total;j++){
+        if(strcmp(cleanData[j],uniqueData[i])==0){
+            tmp++;
+        }
+    }
+    return tmp;
+}
+
+void different(char *cleanData[], char *uniqueData[]){
+    for(long int i=1; i<total;i++){
+        bool checkUnique=false;
+        for(int j=0;j<unique;j++){
+               if(strcmp(cleanData[i],uniqueData[j])==0){
+                   checkUnique=true;
+                   break;
+               }
+           }
+        if(checkUnique==true){
+            continue;
+        }else{
+            uniqueData[unique]=cleanData[i];
+            unique ++;
+        }
+    }
+}
+
