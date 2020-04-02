@@ -1,0 +1,107 @@
+#include <stdio.h>
+void sort(int*, int);
+void comb(int*, int*, int, int, int, int);
+void printComb(int*, int, int);
+
+void sort(int a[], int size){
+    int temp;
+
+    for(int i=size-1;i>=0;i--){
+        for(int j=0;j<i;j++){
+            if(a[j]<a[j+1]){ // 如果前面大於後面，則交換
+                temp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = temp;
+            }
+        }
+    }
+}
+
+
+ // The main function that prints all combinations of size r
+ // in arr[] of size n. This function mainly uses combinationUtil()
+ void printComb(int arr[], int n, int r)
+ {
+     // A temporary array to store all combination one by one
+     int data[r];
+
+     // Print all combination using temprary array 'data[]'
+     comb(arr, data, 0, n-1, 0, r);
+ }
+
+ //arr[] ---> Input Array
+ //data[] ---> Temporary array to store current combination
+ //start & end ---> Staring and Ending indexes in arr[]
+ //index ---> Current index in data[]
+ //r ---> Size of a combination to be printed
+ void comb(int arr[], int data[], int start, int end,
+                     int index, int r)
+ {
+     // Current combination is ready to be printed, print it
+     if (index == r)
+     {
+
+         if(r>0){
+            
+            for (int j=0; j<r-1; j++){
+                printf("%d ", data[j]);
+            }
+             printf("%d\n", data[r-1]);
+         }else{
+                printf("\n");
+         }
+         return;
+     }
+
+     // replace index with all possible elements. The condition
+     // "end-i+1 >= r-index" makes sure that including one element
+     // at index will make a combination with remaining elements
+     // at remaining positions
+     for (int i=start; i<=end && end-i+1 >= r-index; i++)
+     {
+         data[index] = arr[i];
+         comb(arr, data, i+1, end, index+1, r);
+         while(arr[i]==arr[i+1]){
+             i++;
+         }
+     }
+ }
+
+ // Driver program to test above functions
+ int main()
+ {
+
+     int size;
+
+     //printf("size:");
+     scanf("%d",&size);
+     if(size==0){
+         printf("\n");
+         //printf("size:");
+         scanf("%d",&size);
+     }
+     int arr[size];
+     int r;
+
+     while(size>-1){
+
+
+         for(int i=0;i<size;i++){
+             
+            scanf("%d[0-9]",&arr[i]);
+
+         }
+         
+         sort(arr,size);
+         scanf("%d",&r);
+        
+         if(size>=r){
+         printComb(arr, size, r);
+         }
+
+         scanf("%d",&size);
+
+     }
+
+     return 0;
+ }
