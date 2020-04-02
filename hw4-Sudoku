@@ -1,0 +1,125 @@
+//
+//  main.c
+//  hw4
+//
+//  Created by Katie on 2019/10/16.
+//  Copyright © 2019 Katie. All rights reserved.
+//
+
+
+#include <stdio.h>
+#include <math.h>
+void sort(int a[], int size){
+    int i, j, temp;
+ 
+    for(i=size-1;i>=0;i--){
+        for(j=0;j<i;j++){
+            if(a[j]>a[j+1]){ /* 如果前面大於後面，則交換 */
+                temp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = temp;
+            }
+        }
+    }
+    
+}
+
+int main(){
+    int size = 0;
+    
+    scanf("%d[4-25]",&size);
+    int sqrSize=sqrt(size);
+    int sudoku[size][size];
+    int row[size];
+    int col[size];
+
+    //int sqr[size];
+    int result[3]={1,1,1};//[row,col]
+    int check=0;
+ 
+    for(int i=1;i<size+1;i++){
+        check=check+i;
+        
+    }
+    if(size>=4 && size<=25 && size==sqrSize*sqrSize){
+           //存數獨
+           for (int i=0;i<size;i++){
+               for(int j=0;j<size;j++){
+                   scanf("%d",&sudoku[i][j]);
+               }
+           }
+        
+            //判斷row是否符合數獨
+            for (int i=0;i<size;i++){
+                for(int j=0;j<size;j++){
+                    row[j]=sudoku[i][j];
+                    //printf("Before Sort\n");
+                    //printf("%d ", row[j]);
+                }
+                sort(row,size);
+                    //printf("%d ", row[k]);
+                
+//                printf("%d ",row[i]);
+                for(int k=0;k<size-1;k++){
+                    if(row[k]==row[k+1]){
+                        result[0]=-1;
+                    }
+                    
+                }
+                //printf("\n");
+                
+            }
+            //printf("\n");
+            
+            //判斷col是否符合數獨
+            for (int i=0;i<size;i++){
+                for(int j=0;j<size;j++){
+                    col[j]=sudoku[j][i];
+                        
+                }
+                sort(col,size);
+                //printf("%d",col[i]);
+                for(int k=0;k<size-1;k++){
+                    if(col[k]==col[k+1]){
+                        result[1]=-1;
+                    }
+                }
+            
+               
+            }
+        
+       
+        int i,j;
+        for(i=0;i<size;i+=sqrt(size)){
+            for(j=0;j<size;j+=sqrt(size)){
+                int k,l;
+                int count=0;
+                for(k=0;k<sqrt(size);k++){
+                    for(l=0;l<sqrt(size);l++){
+                        count+=sudoku[i+k][j+l];
+                        
+                    }
+                    
+                }
+                //printf("%d\n",count);
+                
+                if(count!=check){
+                        result[2]=-1;
+                }
+            }
+        }
+        
+            
+            //result
+            
+            if(result[0]==-1 || result[1]==-1 || result[2]==-1){
+                printf("Wrong\n");
+            }else{
+                printf("Correct\n");
+            }
+        }
+
+    
+    return 0;
+}
+
