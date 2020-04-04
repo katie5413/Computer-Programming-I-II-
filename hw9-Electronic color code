@@ -1,0 +1,164 @@
+//
+//  main.c
+//  hw9
+//
+//  Created by Katie on 2019/12/9.
+//  Copyright © 2019 Katie. All rights reserved.
+//
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+int first;
+int second;
+int expo;
+int muti[12]={0,0,0,1,2,3,4,5,6,7,8,9};
+char *colorTable[12] = {"silver","gold","black","brown","red","orange","yellow","green","blue","violet","grey","white"};
+char input[100];
+char upper[3];
+char *color[3];
+int status=0;
+
+
+int main() {
+    
+    gets(input);
+    //大寫字母
+    int upper_index=0;
+    for(int i=0;i<100;i++){
+        if(input[i]==toupper(input[i])){
+            upper[upper_index]=input[i];
+            upper_index++;
+        }
+    }
+    /*
+    //改順序之前
+    for(int i=0;i<3;i++){
+        printf("%c ",upper[i]);
+    }
+    printf("\n");
+     */
+    /*
+    //改順序
+    for(int i=0;i<3-1;i++){
+        for(int j=i;j<3-i-1;j++){
+            if(upper[j]>upper[j+1]){
+                int tmp;
+                tmp=upper[j];
+                upper[j]=upper[j+1];
+                upper[j+1]=tmp;
+            }
+        }
+    }
+    //改順序之後
+    for(int i=0;i<3;i++){
+        printf("%c ",upper[i]);
+    }
+    printf("\n");
+    */
+    
+    //小寫顏色
+    int color_index=0;
+    
+    color[0] = strtok(input, upper);
+    
+    //printf("%s\n",color[0]);
+    while(color[color_index]!= NULL){
+        color_index++;
+        color[color_index]=strtok(NULL,upper);
+    }
+    /*
+    //印顏色
+    for(int i=0;i<3;i++){
+        printf("%s\n",color[i]);
+    }
+    printf("\n");
+    */
+    
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3-i-1;j++){
+            if(upper[j]>upper[j+1]){
+                char *tmp;
+                char tmp2;
+                tmp=color[j];
+                tmp2=upper[j];
+                color[j]=color[j+1];
+                upper[j]=upper[j+1];
+                color[j+1]=tmp;
+                upper[j+1]=tmp2;
+            }
+        }
+    }
+    
+   
+    
+    //檢查交換後的顏色
+    for(int i=0;i<3;i++){
+        printf("after:%s\n",color[i]);
+    }
+    printf("\n");
+    
+    int counter=0;
+    for(int i=0;i<2;i++){
+        //printf("%s\n",color[i]);
+        if(status!=0){
+            break;
+        }
+        for(int j=2;j<12;j++){
+            //printf("HEY\n");
+            //printf("color[i]=%s,colorTable[j]=%s\n",color[i],colorTable[j]);
+            
+            if(strcmp(color[i],colorTable[j])!=0){
+                //printf("%d ",strcmp(color[i],colorTable[j]));
+                counter++;
+                //printf("%d ",counter);
+                if(counter==10){
+                    printf("Invalid color: %s\n",color[i]);
+                    status++;
+                    break;
+                }
+            }else{
+                //printf("i=%d\n",i);
+                switch(i){
+                    case 0:
+                        //printf("j=%d\n",j);
+                        first=muti[j];
+                        //printf("first=%d\n",first);
+                        break;
+                    case 1:
+                        second=muti[j];
+                        //printf("second=%d\n",second);
+                        break;
+                        
+                }
+            }
+            //counter=0;
+            //counter=0;
+        }
+        //printf("\n");
+        counter=0;
+    }
+    counter=0;
+    for(int i=0;i<12;i++){
+                if(strcmp(color[2],colorTable[i])!=0){
+                    counter++;
+                }else{
+                    expo=i-2;
+                }
+                if(counter==12){
+                    status++;
+                    printf("Invalid color: %s\n",color[2]);
+                    break;
+                    
+                }
+        //counter=0;
+        }
+    counter=0;
+    
+    double answer=(10.0*first+second) * pow(10,expo);
+    if(status==0){
+        printf("Resistance value: %.3f ohms\n",answer);
+    }
+    return 0;
+}
